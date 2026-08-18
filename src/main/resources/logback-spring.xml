@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Structured JSON logs — the Java analogue of order-service's
+     lib/logger/logger.ts (which hand-builds {level, message, timestamp,
+     ...metadata} and JSON.stringifies it). LogstashEncoder does the same
+     job natively, plus it picks up MDC entries (correlationId) automatically
+     instead of requiring every call site to pass it in. -->
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

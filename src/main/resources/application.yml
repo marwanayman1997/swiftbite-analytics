@@ -1,0 +1,43 @@
+server:
+  port: ${PORT:4100}
+
+spring:
+  application:
+    name: analytics-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/analytics_service}
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        acknowledge-mode: manual
+
+analytics:
+  cors-origins: ${CORS_ORIGINS:http://localhost:3000}
+  rabbitmq:
+    order-events:
+      exchange: ${RABBITMQ_ORDER_EVENTS_EXCHANGE:order.events}
+      queue: ${RABBITMQ_ORDER_EVENTS_QUEUE:analytics-service.order-events}
+      dlx: ${RABBITMQ_ORDER_EVENTS_DLX:order.events.dlx}
+      dlq: ${RABBITMQ_ORDER_EVENTS_DLQ:analytics-service.order-events.dlq}
+      bindings: ${RABBITMQ_ORDER_EVENTS_BINDINGS:order.#,payment.#,delivery.#}
+      dedupe-ttl-hours: ${ORDER_EVENTS_DEDUPE_TTL_HOURS:24}
+  jwt:
+    access-secret: ${ACCESS_SECRET:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
